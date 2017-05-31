@@ -53,4 +53,63 @@ class MinesweeperRepositoryTest extends TestCase
 
 		$this->assertTrue($number_mines == 2);
 	}
+
+	public function test_created_grid()
+	{
+		$minesweeperRepository = new MinesweeperRepository(5, 5, 3);
+
+		$mines_positions = [  
+			1 => [
+				1 => true
+			],
+			3 => [
+				3 => true
+			],
+			4 => [
+				3 => true
+			]
+		];
+
+		$correct_grid = [  
+			0 => [
+				0 => 1,
+				1 => 1,
+				2 => 1,
+				3 => 0,
+				4 => 0
+			],
+			1 => [
+				0 => 1,
+				1 => -1,
+				2 => 1,
+				3 => 0,
+				4 => 0
+			],
+			2 => [
+				0 => 1,
+				1 => 1,
+				2 => 2,
+				3 => 1,
+				4 => 1
+			],
+			3 => [
+				0 => 0,
+				1 => 0,
+				2 => 2,
+				3 => -1,
+				4 => 2
+			],
+			4 => [
+				0 => 0,
+				1 => 0,
+				2 => 2,
+				3 => -1,
+				4 => 2
+			]
+		];
+
+		$grid = $minesweeperRepository->createGrid($mines_positions);
+
+		$this->assertTrue($correct_grid == $grid);
+	}
 }

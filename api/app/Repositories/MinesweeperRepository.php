@@ -56,4 +56,19 @@ class MinesweeperRepository{
 
 		return $number_mines;
 	}
+
+	public function createGrid(array $mines)
+	{
+		$grid = [];
+
+		for ($i=0; $i < $this->x ; $i++):
+			$grid[$i] = [];
+
+			for ($j=0; $j < $this->y ; $j++):
+				$grid[$i][$j] = $this->getNumberOfMinesWithXAndYPosition($i, $j, $mines);
+			endfor;
+		endfor;
+
+		return $grid;
+	}
 }
