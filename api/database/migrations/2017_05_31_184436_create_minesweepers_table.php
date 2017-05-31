@@ -19,7 +19,7 @@ class CreateMinesweepersTable extends Migration
             $table->mediumText('grid');
             $table->integer('x');
             $table->integer('y');
-            $table->string('token');
+            $table->string('token')->unique();
 
             $table->boolean('is_finished')->default(false);
             $table->boolean('succes_game')->default(false);

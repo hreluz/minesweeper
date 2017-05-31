@@ -19,3 +19,9 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('minesweepers/create', ['uses' => 'MinesweepersController@create', 'as' => 'api.minesweepers.create']);
+
+
+Route::group(['middleware' => ['verify-tokenGame'], 'prefix' => 'game'], function () {
+	Route::get('check', function(){ return ['result' => true] ; });
+
+});
