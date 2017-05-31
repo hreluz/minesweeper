@@ -17,4 +17,17 @@ class MinesweeperModelTest extends TestCase
 
 		$this->assertSame(json_encode($this->getTestGrid()),$minesweeper->grid);
 	}
+
+	public function test_adding_a_token_automatically_if_it_is_not_send()
+	{
+		$minesweeperRepository = new MinesweeperRepository(5,5,3);
+
+		$minesweeper = factory(Minesweeper::class)->make([
+			'x' => 5,
+			'y' => 5,
+			'grid' => $this->getTestGrid()
+		]);
+		
+		$this->assertTrue(!empty(strlen($minesweeper->token)));
+	}
 }

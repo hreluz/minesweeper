@@ -30,7 +30,7 @@ $factory->define(App\Minesweeper::class, function (Faker\Generator $faker) {
     return [
         'x' => $coordinate,
         'y' => $coordinate,
-        'token' => \Hash::make(rand(1,10)).time()
+        'token' => ''
     ];
 });
 
