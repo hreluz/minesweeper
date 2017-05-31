@@ -22,3 +22,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Minesweeper::class, function (Faker\Generator $faker) {
+
+    $coordinate = rand(5, 10);
+
+    return [
+        'x' => $coordinate,
+        'y' => $coordinate,
+        'token' => \Hash::make(rand(1,10)).time()
+    ];
+});
+

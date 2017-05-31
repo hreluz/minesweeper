@@ -15,6 +15,12 @@ class MinesweeperRepository{
 		$this->mines = $mines;
 	}
 
+	public function getGrid()
+	{
+		$mines = $this->getMinesPositions();
+		return $this->createGrid( $mines  );
+	}
+
 	public function getMinesPositions()
 	{
 		$mines = $this->mines;
