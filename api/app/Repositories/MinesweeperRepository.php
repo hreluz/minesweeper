@@ -35,4 +35,25 @@ class MinesweeperRepository{
 
 		return $positions;
 	}
+
+	public function getNumberOfMinesWithXAndYPosition(int $x, int $y, array $mines)
+	{
+		if(isset($mines[$x][$y]))
+			return -1 ;
+
+		$number_mines = 0;
+
+		$coordinates_x = [-1 , -1 , -1 , 0, 0, +1 , +1, +1 ];
+		$coordinates_y = [-1 , 0 , +1 , -1, +1, -1, 0, +1 ];
+
+		for ($i=0; $i < count($coordinates_y) ; $i++):
+			$_x = $coordinates_x[ $i ] + $x;
+			$_y = $coordinates_y[ $i ] + $y;
+
+			$is_mine = isset($mines[ $_x ][ $_y ]);
+			$number_mines = $is_mine ? $number_mines + 1 : $number_mines;
+		endfor;
+
+		return $number_mines;
+	}
 }

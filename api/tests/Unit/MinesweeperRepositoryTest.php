@@ -34,4 +34,23 @@ class MinesweeperRepositoryTest extends TestCase
 		 $this->assertTrue($number_mines == 10);
 	}
 
+	public function test_how_many_mines_has_xy_around()
+	{
+		$minesweeperRepository = new MinesweeperRepository(5, 5, 3);
+		$mines_positions = [  
+			1 => [
+				1 => true
+			],
+			3 => [
+				3 => true
+			],
+			4 => [
+				3 => true
+			]
+		];
+
+		$number_mines = $minesweeperRepository->getNumberOfMinesWithXAndYPosition(4, 2 , $mines_positions);
+
+		$this->assertTrue($number_mines == 2);
+	}
 }
