@@ -10,6 +10,7 @@ class Minesweeper extends Model
 
 	public function setGridAttribute($value){
         $this->attributes['grid'] = json_encode($value);
+    	$this->token  = !$this->token ? '' : $this->token;
 	}
 
 	public function setTokenAttribute($value){
