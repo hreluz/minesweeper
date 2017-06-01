@@ -1,40 +1,147 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+<p align="center"><img src="https://lh5.ggpht.com/Z38RGi9W_pEdZDmEYafzHviPk2GXQ2_RmQ0xbGEZbjp7H6LgPOoq-j0Di65MgSmhjxD_=w300"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+## About Minesweeper API
+Hi, looks like you have been looking for a minesweepers API, this is your lucky day, you found the coolest API
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+We have all the tests you need integration, unit, feature tests, I mean tests codes, not classroom tests hahaha
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This is a very easy API to use, we have just 3 urls, how hard could be, right?
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+So let's go 
 
-## Learning Laravel
+1. If you would like to get a minesweeper, you will call this url, is a GET resource
+> [/api/minesweepers/create](https://api/minesweepers/create).
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+If everything goes right(of course it will), you wil get a JSON like this :
+```json
+{
+     "result": true,
+     "token": "this is the token of your game", 
+     "x": "this is a number, and it will let you how many horizontal rows you have to create",
+     "y": "this is a number too , and it will let you how many vertical rows you have to create",
+}
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
 
-## Contributing
+What more? That's it, you have now a minesweeper API to consume with the toke we gave you
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+2. Now, you want to play right? . Ok take it easy pal', we just need one more url and we are done.  The url is this one, is a POST resource :
 
-## Security Vulnerabilities
+> [/api/game/select_coordinate](https://api/game/select_coordinate).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+You will just have to send us your X and Y coordinate selected, and of course the token in the header, because we are not wizards, at least not now .
 
-## License
+So in the header you will send the token, like this
+token: "here goes your token"
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+We know sometimes some developer are lazy, so you can send the token in the content too, we will do that work for you, no worries
+
+Then, in the content you should send the x and y coordinate you selected, like this :
+```
+x : number x position, 
+y : number y position
+```
+That's all you have to send, so let's sum up you just need to send this
+
+```
+token: " the token of the game you are asking",
+x : number x position,
+y : number y position
+```
+If you are thinking to send another types of values to break or hack our API, then try it Mr Robot, we have a very sofisticated validation that will tell you what are you doing wrong
+
+If you are not trying to break it, let's keep going.
+The API will answer with the result of your move, there are just three types of answer you will expect, the keep playing, the win, and game over answer
+
+In the three of them you will receive this :
+```json
+{
+  "is_finished" : "boolean type",
+  "success_game": "boolean_type",
+  "grid": "an array with the coordinates you will have to replace"
+}
+```
+
+## The keep playing answer :
+If the *is_finished* and *success_game* are **false**
+That means you have not selected a mine
+
+## The WIN answer :
+If the *is_finished* and *sucess_game* are **true**
+That will happen when you unlock the grid without selecting a mine
+
+## The GAME OVER answer :
+When *is_finished* is **true** and *sucess_game* is **false**
+This will occur when you have selected a mine
+
+That's all . Enjoy the game :+1:
+
+## Adittional Info
+We know API answers can be kind of intimidating,  so we would like to explain you the answer when you are playing, specifically about the grid field. Here some examples
+
+So in a grid where x = 5 and y = 5, and when you can ** keep playing ** you will get something like this
+
+```
+{
+  "is_finished" : false,
+  "success_game": false,
+  "grid": [
+     0 => [
+       1 => 1,
+       2 => 2,
+     ]
+  ]
+}
+```
+You will have to show something like this
+
+
+```
+|   | 1 | 2 |   |   |
+______________________
+|   |   |   |   |   |
+______________________
+|   |   |   |   |   |
+______________________
+|   |   |   |   |   |
+______________________
+|   |   |   |   |   |
+
+```
+
+In a grid where x = 5 and y = 5, and when you  ** game is over ** you will get something like this
+
+```
+{
+  "is_finished" : true,
+  "success_game": false,
+  "grid": [
+     4 => [
+       2 => -1,
+     ],
+     1 => [
+       3 => -1
+     ],
+     0 => [
+       0 => -1,
+       3 => -1
+     ]
+  ]
+}
+```
+You will have to show something like this
+
+
+```
+| * |   | * |   |   |
+______________________
+|   |   | * |   |   |
+______________________
+|   |   |   |   |   |
+______________________
+|   |   | * |   |   |
+______________________
+|   |   |   |   |   |
+
+```
