@@ -80,7 +80,7 @@ That's all . Enjoy the game :+1:
 ## Adittional Info
 We know API answers can be kind of intimidating,  so we would like to explain you the answer when you are playing, specifically about the grid field. Here some examples
 
-So in a grid where x = 5 and y = 5, and when you can ** keep playing ** you will get something like this
+So in a grid where x = 5 and y = 5, and when you can **keep playing** you will get something like this
 
 ```
 {
@@ -110,7 +110,7 @@ ______________________
 
 ```
 
-In a grid where x = 5 and y = 5, and when you  ** game is over ** you will get something like this
+In a grid where x = 5 and y = 5, and when you  **game is over** you will get something like this
 
 ```
 {
