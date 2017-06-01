@@ -19,9 +19,11 @@ class PlayingGameRepository
 			$success_game = false;
 			$grid_unlock = $this->get_my_grid_with_mines($original_grid, $playing_grid);
 		else:
-			if($coordinate_value == 0)
+			if($coordinate_value == 0):
 				$grid_unlock = $this->get_grid_when_is_empty_cell($x, $y, $original_grid, $playing_grid, []);
-			
+			else:
+				$grid_unlock[$x][$y] = $coordinate_value;
+			endif;
 
 			$is_finished = $this->is_end_of_game($original_grid, $playing_grid, $grid_unlock);
 			$success_game = $is_finished;
@@ -74,7 +76,7 @@ class PlayingGameRepository
 
 		return $grid_unlock;
 	}
-	
+
 	private function is_end_of_game(array $original_grid, array $playing_grid, array $grid_area)
 	{
 		$grid_winner = $this->get_grid_winner($original_grid, $playing_grid);

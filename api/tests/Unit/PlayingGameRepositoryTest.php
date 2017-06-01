@@ -35,7 +35,7 @@ class PlayingGameRepositoryTest extends TestCase
 
 		return $this->assertTrue($game_response == $response_expected);
 	}
-	
+
 	public function test_when_selecting_an_empty_cell()
 	{
 		//Having
@@ -70,6 +70,34 @@ class PlayingGameRepositoryTest extends TestCase
 			'grid' => $grid_area_unlocked
 		];
 
+		return $this->assertTrue($game_response == $response_expected);
+	}
+	
+	public function test_select_a_cell_and_win_the_game()
+	{
+		//This is a grid without mines and a cell unselected
+		$grid_without_mines = $this->getTestGrid();
+		foreach ($this->getTestMinesPositions() as $x => $cell)
+			foreach ($cell as $y => $value)
+				unset($grid_without_mines[$x][$y]);
+
+		$expected_value = $grid_without_mines[0][0];
+		unset($grid_without_mines[0][0]);
+
+		//Having
+		$playingGameRepository = new PlayingGameRepository;	
+		$game_response = $playingGameRepository->coordinate_selected(0,0,  $this->getTestGrid(), $grid_without_mines);
+
+		//Expecting
+		$response_expected = [
+			'is_finished' => true,
+			'success_game' => true,
+			'grid' => [
+				0 => [
+					0 => $expected_value
+				]
+			]
+		];
 		return $this->assertTrue($game_response == $response_expected);
 	}
 }
