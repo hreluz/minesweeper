@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\MinesweeperRepository;
 use App\Minesweeper;
-use Hash;
 
 class MinesweepersController extends Controller
 {

@@ -6,8 +6,6 @@ class MinesweeperModelTest extends TestCase
 {
 	public function test_adding_grid_generates_a_json_grid()
 	{
-		$minesweeperRepository = new MinesweeperRepository(5,5,3);
-
 		$minesweeper = factory(Minesweeper::class)->make([
 			'x' => 5,
 			'y' => 5,
@@ -20,8 +18,6 @@ class MinesweeperModelTest extends TestCase
 
 	public function test_adding_a_token_automatically_if_it_is_not_send()
 	{
-		$minesweeperRepository = new MinesweeperRepository(5,5,3);
-
 		$minesweeper = factory(Minesweeper::class)->make([
 			'x' => 5,
 			'y' => 5,

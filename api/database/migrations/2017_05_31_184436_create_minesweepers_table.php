@@ -22,7 +22,7 @@ class CreateMinesweepersTable extends Migration
             $table->string('token')->unique();
 
             $table->boolean('is_finished')->default(false);
-            $table->boolean('succes_game')->default(false);
+            $table->boolean('success_game')->default(false);
 
             $table->timestamps();
         });

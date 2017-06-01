@@ -24,4 +24,6 @@ Route::get('minesweepers/create', ['uses' => 'MinesweepersController@create', 'a
 Route::group(['middleware' => ['verify-tokenGame'], 'prefix' => 'game'], function () {
 	Route::get('check', function(){ return ['result' => true] ; });
 
+	Route::post('click_coordinate', ['uses' => 'GameController@click_coordinate', 'as' => 'api.game.click_coordinate']);
+
 });

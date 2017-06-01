@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Repositories\PlayingGameRepository;
+use Symfony\Component\HttpFoundation\HeaderBag;
 
 class VerifyTokenGame
 {
@@ -22,6 +23,9 @@ class VerifyTokenGame
         if(!$playingGame){
             return response()->json(['error' => 'unauthorized' ], 401);
         }
+        
+        $request->server->set('HTTP_ACCEPT', 'application/json');
+        $request->headers = new HeaderBag($request->server->getHeaders());
         return $next($request);
     }
 }

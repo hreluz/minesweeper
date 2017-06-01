@@ -1,5 +1,7 @@
 <?php
 
+use App\Minesweeper;
+
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -8,6 +10,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      * @var string
      */
     protected $baseUrl = 'http://localhost';
+    protected $defaultMinesweeper;
 
     /**
      * Creates the application.
@@ -77,5 +80,21 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
                 4 => 2
             ]
         ];
+    }
+
+    public function defaultMinesweeper(array $attributes = [])
+    {
+        if($this->defaultMinesweeper)
+            return $this->defaultMinesweeper;
+
+        if(empty($attributes))
+            $attributes = [
+                'x' => 5,
+                'y' => 5,
+                'token' => 'token',
+                'grid' => $this->getTestGrid()
+            ];
+
+        return $this->defaultMinesweeper = factory(Minesweeper::class)->create($attributes);
     }
 }
