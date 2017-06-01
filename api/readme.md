@@ -13,6 +13,12 @@ So let's go
 1. If you would like to get a minesweeper, you will call this url, is a GET resource
 > [/api/minesweepers/create](https://api/minesweepers/create).
 
+This creates a grid 9x9 with 10 mines, but if you would like you could send the x, y and mines too. Awesome, right ?. 
+
+The parameters are x, y, mines, where x = number rows horizontally, y = number rows vertically, and mines , of course the number of mines
+
+> [/api/minesweepers/create?x=15&y=15&mines=15](https://api/minesweepers/create?x=15&y=15&mines=15).
+
 If everything goes right(of course it will), you wil get a JSON like this :
 ```json
 {
@@ -22,7 +28,6 @@ If everything goes right(of course it will), you wil get a JSON like this :
      "y": "this is a number too , and it will let you how many vertical rows you have to create",
 }
 ```
-
 
 What more? That's it, you have now a minesweeper API to consume with the toke we gave you
 
