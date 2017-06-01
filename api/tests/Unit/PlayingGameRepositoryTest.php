@@ -35,4 +35,41 @@ class PlayingGameRepositoryTest extends TestCase
 
 		return $this->assertTrue($game_response == $response_expected);
 	}
+	
+	public function test_when_selecting_an_empty_cell()
+	{
+		//Having
+		$playingGameRepository = new PlayingGameRepository;
+		$grid = $this->getTestGrid();
+	
+		$game_response = $playingGameRepository->coordinate_selected(4,0, $grid, []);
+
+		//Expecting
+
+		$grid_area_unlocked = [
+				2 => [
+					0 => 1,
+					1 => 1,
+					2 => 2
+				],
+				3 => [
+					0 => 0,
+					1 => 0,
+					2 => 2,
+				],
+				4 => [
+					0 => 0,
+					1 => 0,
+					2 => 2,
+				]
+		];
+
+		$response_expected = [
+			'is_finished' => false,
+			'success_game' => false,
+			'grid' => $grid_area_unlocked
+		];
+
+		return $this->assertTrue($game_response == $response_expected);
+	}
 }
