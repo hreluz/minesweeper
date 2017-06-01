@@ -36,8 +36,11 @@ class MinesweeperRepository{
 		return $positions;
 	}
 
-	public function getNumberOfMinesWithXAndYPosition(int $x, int $y, array $mines)
+	public function getNumberOfMinesWithXAndYPosition($x, $y , array $mines)
 	{
+		if(!is_numeric($x) || !is_numeric($y))
+			abort(404, 'X,Y must be numeric, integer');
+		
 		if(isset($mines[$x][$y]))
 			return -1 ;
 

@@ -9,8 +9,11 @@ class PlayingGameRepository
 		return \App\Minesweeper::where('token', $token)->first();
 	}
 
-	public function coordinate_selected(int $x, int $y, array $original_grid, array $playing_grid)
+	public function coordinate_selected($x, $y, array $original_grid, array $playing_grid)
 	{
+		if(!is_numeric($x) || !is_numeric($y))
+			abort(404);
+
 		$coordinate_value = $original_grid[$x][$y];
 		$grid_unlock = [];
 
@@ -48,8 +51,11 @@ class PlayingGameRepository
 		return $playing_grid;
 	}
 
-	private function get_grid_when_is_empty_cell(int $x, int $y, array $original_grid, array $grid_unlock )
+	private function get_grid_when_is_empty_cell($x, $y, array $original_grid, array $grid_unlock )
 	{
+		if(!is_numeric($x) || !is_numeric($y))
+			abort(404, 'X,Y must be numeric, integer');
+
 		$coordinates_x = [-1 , -1 , -1 , 0, 0, +1 , +1, +1 ];
 		$coordinates_y = [-1 , 0 , +1 , -1, +1, -1, 0, +1 ];
 

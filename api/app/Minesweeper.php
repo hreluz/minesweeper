@@ -45,8 +45,11 @@ class Minesweeper extends Model
 
 
 	//functions
-	public function clickCoordinate(int $x, int $y)
+	public function clickCoordinate($x, $y)
 	{
+		if(!is_numeric($x) || !is_numeric($y))
+			abort(404, 'X,Y must be numeric, integer');
+
 		if($this->is_finished)
 			return [
 				'is_finished' => true,

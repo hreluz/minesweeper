@@ -136,4 +136,20 @@ class ClickACoordinateInGridTest extends FeatureTestCase
 
 		$this->assertTrue($expected_errors == $errors);
 	}
+
+	public function test_click_coordinate_validation_are_off_limits_of_grid()
+	{
+		$minesweeper = $this->defaultMinesweeper();
+
+        $response = $this->json('POST', route('api.game.click_coordinate'), ['x' => 222 , 'y' => 222], ['token-game' => 'token']);
+        $errors = $response->decodeResponseJson();
+
+		$expected_errors = [
+        	'coordinates' => [
+        		'The coordinates are off limit'
+        	],
+        ];
+
+		$this->assertTrue($expected_errors == $errors);
+	}
 }

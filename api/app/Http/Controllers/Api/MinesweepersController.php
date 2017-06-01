@@ -9,9 +9,16 @@ use App\Minesweeper;
 
 class MinesweepersController extends Controller
 {
-	public function create()
+	public function create(Request $request)
 	{
-		$minesweeperRepository = new MinesweeperRepository;
+		$x = $request->get('x');
+		$y = $request->get('y');
+		$mines = $request->get('mines');
+
+		if(is_numeric($x) && $x > 0 && is_numeric($y) && $y > 0 && is_numeric($mines) && $mines > 0 )
+			$minesweeperRepository = new MinesweeperRepository($x, $y , $mines);
+		else
+			$minesweeperRepository = new MinesweeperRepository;
 
 		$minesweeper = new Minesweeper([
 			'grid' => $minesweeperRepository->getGrid(),
