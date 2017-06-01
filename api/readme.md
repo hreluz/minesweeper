@@ -6,7 +6,7 @@ Hi, looks like you have been looking for a minesweepers API, this is your lucky 
 
 We have all the tests you need integration, unit, feature tests, I mean tests codes, not classroom tests hahaha
 
-This is a very easy API to use, we have just 3 urls, how hard could be, right?
+This is a very easy API to use, we have just 2 urls, how hard could be, right?
 
 So let's go 
 
