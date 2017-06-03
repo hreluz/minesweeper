@@ -19,14 +19,17 @@ class PlayingGameRepository
 		$coordinate_value = $original_grid[$x][$y];
 		$grid_unlock = [];
 
+		//When is a mine
 		if($coordinate_value == -1):
 			$is_finished = true;
 			$success_game = false;
 			$grid_unlock = $this->get_my_grid_with_mines($original_grid, $playing_grid);
 		else:
+			//When is an empty cell
 			if($coordinate_value == 0):
 				$grid_unlock = $this->get_grid_when_is_empty_cell($x, $y, $original_grid, $playing_grid, []);
 			else:
+				//When is not an empty cell and not a mine
 				$grid_unlock[$x][$y] = $coordinate_value;
 			endif;
 
@@ -45,8 +48,10 @@ class PlayingGameRepository
 		];
 	}
 
+	//Will give you back your grid, with the mines on it
 	private function get_my_grid_with_mines(array $original_grid, array $playing_grid)
 	{
+
 		foreach ($original_grid as $x => $grid):
 			foreach ($grid as $y => $value):
 				if($value == -1)
@@ -57,6 +62,7 @@ class PlayingGameRepository
 		return $playing_grid;
 	}
 
+	//Will give you back all the cells around it, if there is another empty, will keep doing the same
 	private function get_grid_when_is_empty_cell($x, $y, array $original_grid, array $grid_unlock )
 	{
 		if(!is_numeric($x) || !is_numeric($y))
@@ -96,6 +102,7 @@ class PlayingGameRepository
 		return $grid_winner == $my_grid;
 	}
 
+	//Will give you back your new grid with the cell that you clicked
 	private function get_my_new_grid(array $grid_area, array $playing_grid)
 	{
 		foreach ($grid_area as $x => $cell):

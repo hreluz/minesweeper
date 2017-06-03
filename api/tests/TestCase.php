@@ -28,6 +28,20 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     public function getTestMinesPositions()
     {
+        /*
+     
+        |   |   |   |   |   |
+        ______________________
+        |   | * |   |   |   |
+        ______________________
+        |   |   |   |   |   |
+        ______________________
+        |   |   |   | * |   |
+        ______________________
+        |   |   |   | * |   |
+        */
+
+        
         return [  
             1 => [
                 1 => true
@@ -43,6 +57,18 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     public function getTestGrid()
     {
+        /*
+        | 1 | 1 | 1 | 0 | 0 |
+        ______________________
+        | 1 | * | 1 | 0 | 0 |
+        ______________________
+        | 1 | 1 | 2 | 1 | 1 |
+        ______________________
+        | 0 | 0 | 2 | * | 2 |
+        ______________________
+        | 0 | 0 | 2 | * | 2 |
+        */
+
         return [  
             0 => [
                 0 => 1,
