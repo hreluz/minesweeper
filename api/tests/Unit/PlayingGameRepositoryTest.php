@@ -26,11 +26,13 @@ class PlayingGameRepositoryTest extends TestCase
 				3 => -1
 			]
 		];
+		ksort($grid_area_unlocked);
 
 		$response_expected = [
 			'is_finished' => true,
 			'success_game' => false,
-			'grid' => $grid_area_unlocked
+			'grid' => $grid_area_unlocked,
+			'my_new_grid' => []
 		];
 
 		return $this->assertTrue($game_response == $response_expected);
@@ -63,11 +65,13 @@ class PlayingGameRepositoryTest extends TestCase
 					2 => 2,
 				]
 		];
+		ksort($grid_area_unlocked);
 
 		$response_expected = [
 			'is_finished' => false,
 			'success_game' => false,
-			'grid' => $grid_area_unlocked
+			'grid' => $grid_area_unlocked,
+			'my_new_grid' => $grid_area_unlocked
 		];
 
 		return $this->assertTrue($game_response == $response_expected);
@@ -89,15 +93,54 @@ class PlayingGameRepositoryTest extends TestCase
 		$game_response = $playingGameRepository->coordinate_selected(0,0,  $this->getTestGrid(), $grid_without_mines);
 
 		//Expecting
+		$grid_area_unlocked = [
+			0 => [
+				0 => $expected_value
+			]
+		];
+
+		ksort($grid_area_unlocked);
+
 		$response_expected = [
 			'is_finished' => true,
 			'success_game' => true,
-			'grid' => [
-				0 => [
-					0 => $expected_value
-				]
-			]
-		];
+			'grid' => $grid_area_unlocked,
+			"my_new_grid" => [
+								0 => [
+							      1 => 1,
+							      2 => 1,
+							      3 => 0,
+							      4 => 0,
+							      0 => 1,
+							    ],
+							    1 => [
+							      0 => 1,
+							      2 => 1,
+							      3 => 0,
+							      4 => 0,
+							    ],
+							    2 => [
+							      0 => 1,
+							      1 => 1,
+							      2 => 2,
+							      3 => 1,
+							      4 => 1,
+							    ],
+							    3 => [
+							      0 => 0,
+							      1 => 0,
+							      2 => 2,
+							      4 => 2,
+							    ],
+							    4 => [
+							      0 => 0,
+							      1 => 0,
+							      2 => 2,
+							      4 => 2,
+							    ]
+					]
+			];
+
 		return $this->assertTrue($game_response == $response_expected);
 	}
 }

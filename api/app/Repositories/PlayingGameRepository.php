@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 class PlayingGameRepository
 {
+	private $my_new_grid = [];
+
 	public function verifyTokenGame($token)
 	{
 		return \App\Minesweeper::where('token', $token)->first();
@@ -32,10 +34,14 @@ class PlayingGameRepository
 			$success_game = $is_finished;
 		endif;
 
+		ksort($grid_unlock);
+		ksort($this->my_new_grid);
+
 		return [
 			'is_finished' => $is_finished,
 			'success_game' => $success_game,
-			'grid' => $grid_unlock
+			'grid' => $grid_unlock,
+			'my_new_grid' => $this->my_new_grid
 		];
 	}
 
@@ -101,7 +107,7 @@ class PlayingGameRepository
 			endforeach;
 		endforeach;
 
-		return $playing_grid;
+		return $this->my_new_grid = $playing_grid;
 	}
 
 	private function get_grid_winner(array $original_grid)

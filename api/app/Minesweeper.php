@@ -63,7 +63,7 @@ class Minesweeper extends Model
 
 		$this->is_finished = $response['is_finished'];
 		$this->success_game = $response['success_game'];
-		$this->playing_grid = $response['grid'];
+		$this->playing_grid = $this->is_finished && !$this->success_game ? $response['grid'] : $response['my_new_grid'];
 		$this->save();
 
 		return $response;

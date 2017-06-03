@@ -152,4 +152,48 @@ class ClickACoordinateInGridTest extends FeatureTestCase
 
 		$this->assertTrue($expected_errors == $errors);
 	}
+
+	public function test_click_not_an_empty_cell_by_second_time()
+	{
+		//Having
+		$this->defaultMinesweeper();
+
+		//First Time
+		$coordinates_without_mine = ['x' => 1, 'y' => 2];
+        $response = $this->json('POST', route('api.game.click_coordinate'), $coordinates_without_mine, ['token-game' => 'token']);
+
+        $grid =  [1 => [2 => 1]];
+
+        $response->seeStatusCode(200)
+         		->seeJson([
+	                'is_finished' => false,
+        			'success_game' => false,
+        			'grid' => $grid
+	            ]);
+
+	    //Then Second
+		$coordinates_without_mine = ['x' => 0, 'y' => 1];
+
+        //When
+        $response = $this->json('POST', route('api.game.click_coordinate'), $coordinates_without_mine, ['token-game' => 'token']);
+
+        $grid =  [ 0 => [1 => 1] , 1 => [2 => 1]];
+        ksort($grid);
+
+	    //Then First Time
+        $response->seeStatusCode(200)
+         		->seeJson([
+	                'is_finished' => false,
+        			'success_game' => false,
+        			'grid' => [0 => [ 1 => 1 ]]
+	            ]);
+
+	    //In Database
+        $this->seeInDatabase('minesweepers',[
+        	'token' => 'token',
+        	'is_finished' => false,
+        	'success_game' => false,
+        	'playing_grid' => json_encode($grid, JSON_FORCE_OBJECT)
+        ]);
+	}
 }

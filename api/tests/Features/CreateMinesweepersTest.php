@@ -15,14 +15,14 @@ class CreateMinesweepersTest extends FeatureTestCase
 	                'y' => 9,
 	            ]);
 
-
         //Check in Database
         $data = $response->decodeResponseJson();
 
         $this->seeInDatabase('minesweepers',[
         	'x' => 9,
         	'y' => 9,
-        	'token' => $data['token']
+        	'token' => $data['token'],
+            'playing_grid' => null
         ]);
 	}
 }
