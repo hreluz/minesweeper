@@ -5,6 +5,9 @@ namespace App\Repositories;
 class PlayingGameRepository
 {
 	private $my_new_grid = [];
+	private $grid_for_empty_cell = [];
+	private $coordinates_x = [-1 , -1 , -1 , 0,   0, +1 , +1, +1 ];
+	private $coordinates_y = [-1 ,  0 , +1 , -1, +1, -1,   0, +1 ];
 
 	public function verifyTokenGame($token)
 	{
@@ -27,11 +30,11 @@ class PlayingGameRepository
 		else:
 			//When is an empty cell
 			if($coordinate_value == 0):
-				$grid_unlock = $this->get_grid_when_is_empty_cell($x, $y, $original_grid, $playing_grid, []);
-			else:
-				//When is not an empty cell and not a mine
-				$grid_unlock[$x][$y] = $coordinate_value;
+				$this->grid_for_empty_cell = $original_grid;
+				$grid_unlock = $this->get_grid_when_is_empty_cell($x, $y, $playing_grid, []);
 			endif;
+			
+			$grid_unlock[$x][$y] = $coordinate_value;
 
 			$is_finished = $this->is_end_of_game($original_grid, $playing_grid, $grid_unlock);
 			$success_game = $is_finished;
@@ -51,7 +54,6 @@ class PlayingGameRepository
 	//Will give you back your grid, with the mines on it
 	private function get_my_grid_with_mines(array $original_grid, array $playing_grid)
 	{
-
 		foreach ($original_grid as $x => $grid):
 			foreach ($grid as $y => $value):
 				if($value == -1)
@@ -62,34 +64,31 @@ class PlayingGameRepository
 		return $playing_grid;
 	}
 
-	//Will give you back all the cells around it, if there is another empty, will keep doing the same
-	private function get_grid_when_is_empty_cell($x, $y, array $original_grid, array $grid_unlock )
+	//Will give you back all the cells around it, if there is another empty, will keep doing the same, in a recursive function
+	private function get_grid_when_is_empty_cell($x, $y, array $grid_unlock, array $waiting )
 	{
 		if(!is_numeric($x) || !is_numeric($y))
 			abort(404, 'X,Y must be numeric, integer');
 
-		$coordinates_x = [-1 , -1 , -1 , 0, 0, +1 , +1, +1 ];
-		$coordinates_y = [-1 , 0 , +1 , -1, +1, -1, 0, +1 ];
 
-		for ($i=0; $i < count($coordinates_y) ; $i++):
-			$_x = $coordinates_x[ $i ] + $x;
-			$_y = $coordinates_y[ $i ] + $y;
+		for ($i=0; $i < 8 ; $i++):
+			$_x = $this->coordinates_x[ $i ] + $x;
+			$_y = $this->coordinates_y[ $i ] + $y;
 
-			if(!isset($original_grid[ $_x ][ $_y ]))
+			if($this->is_not_allow_to_enter($x, $y, $_x, $_y, $waiting))
 				continue;
 
-			$coordinate_selected = $original_grid[$_x][$_y];
-			$original_grid[$_x][$_y] = -2;
+			$coordinate_selected = $this->grid_for_empty_cell[$_x][$_y];
+			$this->grid_for_empty_cell[$_x][$_y] = -2;
 
-			if($coordinate_selected == 0)
-				$grid_unlock = $this->get_grid_when_is_empty_cell($_x, $_y, $original_grid, $grid_unlock);
-
-			if($coordinate_selected != -2):
-				if(!isset($grid_unlock[$_x]))
-					$grid_unlock[$_x] = [];
-
+			if($coordinate_selected != -2)
 				$grid_unlock[$_x][$_y] = $coordinate_selected;
+
+			if($coordinate_selected == 0):
+				$waiting = $this->add_cells_around_to_waiting_list($i, $x, $y, $waiting);
+				$grid_unlock = $this->get_grid_when_is_empty_cell($_x, $_y, $grid_unlock, $waiting);
 			endif;
+
 		endfor;
 
 		return $grid_unlock;
@@ -134,4 +133,31 @@ class PlayingGameRepository
 
 		return $grid_without_mines;
 	}
+
+	//Functions use in get_grid_when_is_empty_cell()
+
+	private function is_not_allow_to_enter( $x, $y, $_x, $_y, array $waiting )
+	{ 
+		//Check if this cell is in the waiting list, so we will skip or if this cell has already been read ( -2 ) or if it does not exist in the grid
+		$temp_x_y = $_x.','.$_y	;
+		return isset($waiting[ $temp_x_y ]) && $waiting[ $temp_x_y ]  != $x.$y ||	!isset($this->grid_for_empty_cell[ $_x ][ $_y ]) ||  $this->grid_for_empty_cell[ $_x ][ $_y ] == -2;
+	}
+
+	private function add_cells_around_to_waiting_list($i, $x, $y, $waiting)
+	{
+		//We add the cells around that has not been already added to the waiting array. Why? It could work without this waiting list, but in a huge grid, the server will run out of memory, so we keep a track of the cells around  so the recursive function will go back faster
+
+		for ($j= $i ; $j < 8 ; $j++):
+			$temp_x = $this->coordinates_x[ $j ] + $x;
+			$temp_y = $this->coordinates_y[ $j ] + $y;
+			$temp_x_y = $temp_x.','.$temp_y;
+
+			if($temp_x >= 0 && $temp_y >= 0 && !isset($waiting[$temp_x_y])):
+				$waiting[$temp_x_y] = $x.$y;
+			endif;
+		endfor;
+
+		return $waiting;
+	}
+
 }
