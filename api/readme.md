@@ -23,7 +23,7 @@ If everything goes right(of course it will), you wil get a JSON like this :
 ```json
 {
      "result": true,
-     "token": "this is the token of your game", 
+     "token-game": "this is the token of your game", 
      "x": "this is a number, and it will let you how many horizontal rows you have to create",
      "y": "this is a number too , and it will let you how many vertical rows you have to create",
 }
@@ -38,7 +38,7 @@ What more? That's it, you have now a minesweeper API to consume with the toke we
 You will just have to send us your X and Y coordinate selected, and of course the token in the header, because we are not wizards, at least not now .
 
 So in the header you will send the token, like this
-token: "here goes your token"
+token-game: "here goes your token"
 
 We know sometimes some developer are lazy, so you can send the token in the content too, we will do that work for you, no worries
 
@@ -50,7 +50,7 @@ y : number y position
 That's all you have to send, so let's sum up you just need to send this
 
 ```
-token: " the token of the game you are asking",
+token-game: " the token of the game you are asking",
 x : number x position,
 y : number y position
 ```
